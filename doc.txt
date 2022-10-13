@@ -1,0 +1,14 @@
+project structure = 22 min
+pre-requests (css-reset, some other styles) & dependencies (font, finding image-placeholder, ...) = 28 min
+
+central info table = 60 min
+right side info = 84 min
+left side info = 44 min
+
+card icons with title (bottom of table) = 16 min
+
+responsive = 
+
+do dynamic = 
+
+

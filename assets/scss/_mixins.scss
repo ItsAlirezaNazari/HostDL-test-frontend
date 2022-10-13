@@ -1,0 +1,18 @@
+@mixin font ($size, $weight, $height, $color: #FFFFFF) {
+   font-size: $size;
+   font-weight: $weight;
+   line-height: $height;
+   color: $color;
+}
+
+@mixin min-media ($breakpoint) {
+   @media only screen and (min-width: $breakpoint) {
+      @content;
+   }
+}
+
+@mixin max-media ($breakpoint) {
+   @media only screen and (max-width: $breakpoint) {
+      @content;
+   }
+}
