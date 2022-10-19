@@ -1,25 +1,12 @@
-async function service(param) {
-	try {
-		let url = 'https://541.ir/fronttest/fronttest.php';
-		let method = 'POST';
-		const params = new URLSearchParams();
-		params.append('param', param);
-
-		let response = await fetch(url, {
-			method,
-			headers: {
-				'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-			},
-			body: params,
-		});
-
-		if (response.status === 200) {
-			let data = await response.json();
-			return data;
-		}
-	} catch (err) {
-		console.log(err);
-	}
+// Helpers
+function service(param) {
+	return $.ajax('https://541.ir/fronttest/fronttest.php', {
+		method: 'POST',
+		data: { param },
+		error: function (err) {
+			console.log(err);
+		},
+	});
 }
 
 function commaFormatted(amount) {
@@ -151,9 +138,13 @@ async function render(param) {
 
 	let { table, price, otherFiles } = getHTML(data);
 
-	document.querySelector('.current-file-info .table').innerHTML = table;
-	document.querySelector('.sale .price-container').innerHTML = price;
-	document.querySelector('.files .other-files').innerHTML = otherFiles;
+	// document.querySelector('.current-file-info .table').innerHTML = table;
+	// document.querySelector('.sale .price-container').innerHTML = price;
+	// document.querySelector('.files .other-files').innerHTML = otherFiles;
+
+   $('.current-file-info .table').html(table);
+   $('.sale .price-container').html(price);
+   $('.files .other-files').html(otherFiles);
 }
 
 async function renderAFileData(param) {
@@ -161,6 +152,32 @@ async function renderAFileData(param) {
 	let table = getTable(data);
 	let price = getPrice(data);
 
-	document.querySelector('.current-file-info .table').innerHTML = table;
-	document.querySelector('.sale .price-container').innerHTML = price;
+	// document.querySelector('.current-file-info .table').innerHTML = table;
+	// document.querySelector('.sale .price-container').innerHTML = price;
+
+   $('.current-file-info .table').html(table);
+   $('.sale .price-container').html(price);
 }
+
+
+// Main
+$(document).ready(async function () {
+   await render('main');
+
+   $('.file-types').on('click', async function (event) {
+		let param;
+
+		if ($(event.target).hasClass('docx-icon')) param = 'docx';
+		else if ($(event.target).hasClass('psd-icon')) param = 'psd';
+		else return;
+
+		await render(param);
+	});
+
+	$('.other-files').on('click', async function (event) {
+		if ($(event.target).hasClass('other-file') && !$(event.target).hasClass('more-files')) {
+			let id = $(event.target).data('id');
+			await renderAFileData(id);
+		}
+	});
+});
